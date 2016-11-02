@@ -6,9 +6,9 @@ class EmailValidator < ActiveModel::EachValidator
   def self.regexp(options = {})
     options = default_options.merge(options)
 
-    name_validation = options[:strict_mode] ? "-\\p{L}\\d+._" : "^@\\s"
+    name_validation = options[:strict_mode] ? "(?!\\.)(?:[-\\p{L}\\d+_]|\\.(?![\\.@]))" : "[^@\\s]"
 
-    /\A\s*([#{name_validation}]{1,64})@((?:[-\p{L}\d]+\.)+\p{L}{2,})\s*\z/i
+    /\A\s*(#{name_validation}{1,64})@((?:[-\p{L}\d]+\.)+[\p{L}]{2,})\s*\z/i
   end
 
   def self.valid?(value, options = {})
